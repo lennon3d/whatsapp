@@ -6,19 +6,19 @@ class Call_API extends Helpers{
 	
 	function Call_API($config) {
 		
-		if($config['mobile']){	$this->mobile = $config['mobile'];}
-		if($config['smscode']){ $this->smscode = $config['smscode'];}
-		if($config['password']){$this->password = $config['password'];}
+		if(isset($config['mobile'])){	$this->mobile = $config['mobile'];}
+		if(isset($config['smscode'])){ $this->smscode = $config['smscode'];}
+		if(isset($config['password'])){$this->password = $config['password'];}
 	}
 	
 	/**
 	 * Get SMS Code
 	 */
 	function getSMSCode() {
-		
 		$identity = strtolower(urlencode(sha1($this->mobile, true)));
-		$w = new WhatsProt($this->mobile, $identity, "Rajesh", true);
-		$w->codeRequest();
+		$w = new WhatsProt($this->mobile, $identity, "Rajesh", false);
+		$response = $w->codeRequest();
+		return $response;
 	}
 	
 	/**
@@ -27,7 +27,7 @@ class Call_API extends Helpers{
 	function getPassword() {
 		
 		$identity = strtolower(urlencode(sha1($this->mobile, true)));
-		$w = new WhatsProt($this->mobile, $identity, "Rajesh", true);
+		$w = new WhatsProt($this->mobile, $identity, "Rajesh", false);
 		$result = $w->codeRegister($this->smscode);
 		$this->password =  $result->pw;
 	}

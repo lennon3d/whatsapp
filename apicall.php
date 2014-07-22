@@ -7,26 +7,29 @@ include 'lib/api.php';
 
 $options = array();
 
-if($_GET['mobile'] && strlen($_GET['mobile'])==10){
-	$options['mobile'] = "91".$_GET['mobile'];
-}
-
-if($_GET['smscode'] && strlen($_GET['smscode'])==6){
-	$options['smscode'] = $_GET['smscode'];
-}
-
-if($_GET['password'] && $_GET['password'] !=""){
-	$options['password'] = $_GET['password'];
-}
-$apicall = new Call_API($options);
-
-if($_GET['action'] == "getsmscode" ){
-	$apicall->getSMSCode();
+if (isset($_POST)) {
 	
-}
-
-
-if($_GET['action'] == "getpassword" ){
-	$apicall->getPassword();
-	echo $apicall->password;
+	if(isset($_POST['mobile']) && strlen($_POST['mobile'])==10){
+		$options['mobile'] = "91".$_POST['mobile'];
+	}
+	
+	if(isset($_POST['smscode']) && strlen($_POST['smscode'])==6){
+		$options['smscode'] = $_POST['smscode'];
+	}
+	
+	if( isset($_POST['password']) && $_POST['password'] !=""){
+		$options['password'] = $_POST['password'];
+	}
+	$apicall = new Call_API($options);
+	
+	if(isset($_POST['action']) && $_POST['action'] == "getsmscode" ){
+		$response = $apicall->getSMSCode();
+		echo  json_encode($response);
+	}
+	
+	
+	if( isset($_POST['action']) && $_POST['action'] == "getpassword" ){
+		$apicall->getPassword();
+		echo $apicall->password;
+	}	
 }
